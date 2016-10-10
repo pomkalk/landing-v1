@@ -50,8 +50,16 @@ class Install extends Command
         $params['MAIL_USERNAME'] = $this->ask('User name', 'admin@admin.org');
         $params['MAIL_PASSWORD'] = $this->secret('Password');
         $params['MAIL_ENCRYPTION'] = $this->ask('Encryption', 'ssl');
-        
-        
-        dd($params);
+
+        $config = file_get_contents(base_path('.env.example'));
+
+        foreach ($params as $key=>$param)
+            $config = preg_replace('/^'.$key.'=(.*)$/m', $key.'='.$param, $config);
+        file_put_contents(base_path('.env'), $config);
+        $this->info('Config file created');
+        $this->call('key:generate');
+        $this->call('migrate:refresh', [
+            '--seed'=>true,
+        ]);
     }
 }
