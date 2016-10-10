@@ -37,6 +37,21 @@ class Install extends Command
      */
     public function handle()
     {
-        //
+        $this->info('DB settings:');
+        $params['DB_HOST'] = $this->ask('Host', 'localhost');
+        $params['DB_PORT'] = $this->ask('Port', 3306);
+        $params['DB_DATABASE'] = $this->ask('Data base name', 'homestead');
+        $params['DB_USERNAME'] = $this->ask('User name', 'homestead');
+        $params['DB_PASSWORD'] = $this->secret('Password');
+
+        $this->info('E-mail settings:');
+        $params['MAIL_HOST'] = $this->ask('Host', 'smtp.yandex.ru');
+        $params['MAIL_PORT'] = $this->ask('Port', 465);
+        $params['MAIL_USERNAME'] = $this->ask('User name', 'admin@admin.org');
+        $params['MAIL_PASSWORD'] = $this->secret('Password');
+        $params['MAIL_ENCRYPTION'] = $this->ask('Encryption', 'ssl');
+        
+        
+        dd($params);
     }
 }
